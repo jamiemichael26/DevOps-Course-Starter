@@ -67,3 +67,12 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+def delete_item(id):
+    existing_items = get_items()
+    try:
+        existing_items.pop(id)
+    finally:
+        updated_items = existing_items
+        session['items'] = updated_items
+

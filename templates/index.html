@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4">To-Do App</h1>
+    <p class="lead">Just another to-do app.</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Items</h2>
+      <ul class="list-group mb-4">
+          <table> 
+            <th>ID</th>
+            <th>Status</th>
+            <th>Title</th>
+            {% for item in myitems %} 
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.title }}</td>
+            </tr> 
+            {% endfor %}
+          </table>
+    </div>
+    
+    <form action="" method="post">
+      <label for="title">Enter new title</label>
+      <input type="text" id="title" name="title" size="10">
+      <button type="submit">Add New To-Do</button>
+    </form>
+    
+    <form action="" method="post">
+      <label for="title">Delete an entry</label>
+      <input type="text" id="del_id" name="del_id" size="10">
+      <button type="submit">Delete</button>
+    </form>
+    
+    <form action="" method="post">
+      <label for="title">Set as Complete</label>
+      <input type="text" id="com_id" name="com_id" size="10">
+      <button type="submit">Complete</button>
+    </form>
+    <div>
+  </div>
+  </div>
+{% endblock %}
