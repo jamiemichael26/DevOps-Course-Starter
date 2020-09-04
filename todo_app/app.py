@@ -6,7 +6,7 @@ from todo_app.flask_config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
         items = session.get_items()
@@ -30,6 +30,12 @@ def index():
         #Show website
         return render_template('index.html', myitems=items)
 
+@app.route('/new-item', methods=['POST']) 
+def new_item():
+    if request.form.get('title'):
+        title = request.form.get('title')
+        session.add_item(title)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run()
