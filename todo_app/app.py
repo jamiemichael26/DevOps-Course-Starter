@@ -11,30 +11,27 @@ def index():
     if request.method == 'GET':
         items = session.get_items()
         return render_template('index.html', myitems=items)
-    elif request.method == 'POST':
-        #Add new item
-        if request.form.get('title'):
-            title = request.form.get('title')
-            session.add_item(title)
-        #Delete item
-        if request.form.get('del_id'):
-            del_id = int(request.form.get('del_id')) if request.form.get('del_id') else 0
-            session.delete_item(del_id -1)
-        #Update item
-        if request.form.get('com_id'):
-            com_item = session.get_item(request.form.get('com_id'))
-            com_item['status'] = 'Complete'
-            session.save_item(com_item)
-        #Populate table with current items
-        items = session.get_items()
-        #Show website
-        return render_template('index.html', myitems=items)
 
 @app.route('/new-item', methods=['POST']) 
 def new_item():
     if request.form.get('title'):
         title = request.form.get('title')
         session.add_item(title)
+    return redirect('/')
+
+@app.route('/delete-item', methods=['POST']) 
+def delete_item():
+    if request.form.get('del_id'):
+        del_id = int(request.form.get('del_id')) 
+        session.delete_item(del_id -1)
+    return redirect('/')
+
+@app.route('/update-item', methods=['POST']) 
+def update_item():
+    if request.form.get('com_id'):
+        com_item = session.get_item(request.form.get('com_id'))
+        com_item['status'] = 'Complete'
+        session.save_item(com_item)
     return redirect('/')
 
 if __name__ == '__main__':
