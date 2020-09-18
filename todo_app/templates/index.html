@@ -11,8 +11,39 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+          <table> 
+            <th>ID</th>
+            <th>Status</th>
+            <th>Title</th>
+            {% for item in myitems %} 
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.title }}</td>
+            </tr> 
+            {% endfor %}
+          </table>
     </div>
+    
+    <form action="/new-item" method="POST">
+      <label for="title">Enter new title</label>
+      <input type="text" id="title" name="title" size="10">
+      <button type="submit">New item</button>
+    </form>
+    
+    <form action="/delete-item" method="post">
+      <label for="title">Delete an entry</label>
+      <input type="text" id="del_id" name="del_id" size="10">
+      <button type="submit">Delete</button>
+    </form>
+    
+    <form action="/update-item" method="post">
+      <label for="title">Set as Complete</label>
+      <input type="text" id="com_id" name="com_id" size="10">
+      <button type="submit">Complete</button>
+    </form>
+    
+    <div>
+  </div>
   </div>
 {% endblock %}
