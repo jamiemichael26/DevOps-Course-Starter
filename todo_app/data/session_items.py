@@ -1,78 +1,67 @@
+import requests
 from flask import session
 
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
-
+def get_apikeys():
+    with open('todo_app\\data\\key.gitignore') as f:
+            data = f.read().split("\n")
+    return {'key': data[0], 'token': data[1]}
 
 def get_items():
-    """
-    Fetches all saved items from the session.
+    apikey = get_apikeys()
+    url = "https://api.trello.com/1/boards/c7trSbnB/cards"
 
-    Returns:
-        list: The list of saved items.
-    """
-    return session.get('items', _DEFAULT_ITEMS)
+    response = requests.request("GET",url,params=apikey)
 
+    return response.json()
 
-def get_item(id):
-    """
-    Fetches the saved item with the specified ID.
+def complete_item(id):
+    apikey = get_apikeys()
 
-    Args:
-        id: The ID of the item.
+    url = "https://api.trello.com/1/cards/" + id
 
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+    headers = {
+    "Accept": "application/json"
+    }
 
+    apikey.update({'idList': '5f5be2d2c3c4723ac911bbcb'})
+    query = apikey
+
+    requests.request(
+    "PUT",
+    url,
+    headers=headers,
+    params=query
+    )
 
 def add_item(title):
-    """
-    Adds a new item with the specified title to the session.
+    apikey = get_apikeys()
+    url = "https://api.trello.com/1/cards"
 
-    Args:
-        title: The title of the item.
+    apikey.update({'idList': '5f5be2d2c3c4723ac911bbc9','name': title})
+    query = apikey
 
-    Returns:
-        item: The saved item.
-    """
-    items = get_items()
+    requests.request(
+    "POST",
+    url,
+    params=query
+    )
 
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
+def doing_item(id):
+    apikey = get_apikeys()
 
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
+    url = "https://api.trello.com/1/cards/" + id
 
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
+    headers = {
+    "Accept": "application/json"
+    }
 
-    return item
+    apikey.update({'idList': '5f5be2d2c3c4723ac911bbca'})
+    query = apikey
 
-
-def save_item(item):
-    """
-    Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
-
-    Args:
-        item: The item to save.
-    """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
-
-    session['items'] = updated_items
-
-    return item
-
-def delete_item(id):
-    existing_items = get_items()
-    try:
-        existing_items.pop(id)
-    finally:
-        updated_items = existing_items
-        session['items'] = updated_items
+    requests.request(
+    "PUT",
+    url,
+    headers=headers,
+    params=query
+    )
 

@@ -9,41 +9,45 @@
 
   <div class="row">
     <div class="col-md-12">
+      <h2>New item</h2>
+      <form action="{{ url_for('add_item') }}" method="POST">
+        <div class="form-group form-row align-items-center">
+          <div class="col-auto">
+            <label for="title-input">Title</label>
+          </div>
+          <div class="col">
+            <input type="text" name="title" id="title-input" class="form-control">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-success">Add Item</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-          <table> 
-            <th>ID</th>
-            <th>Status</th>
-            <th>Title</th>
-            {% for item in myitems %} 
-            <tr>
-                <td>{{ item.id }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.title }}</td>
-            </tr> 
-            {% endfor %}
-          </table>
+        {% for item in items %}
+          <li class="list-group-item flex-column">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mt-1 mb-1">{{ item.name }}</h5>
+              {% if item.idList == '5f5be2d2c3c4723ac911bbc9' %}
+                <h6 class="mt-1 mb-1">To Do</h6>
+                <a href="{{ url_for('doing_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Doing</a>
+              {% elif item.idList == '5f5be2d2c3c4723ac911bbca' %}
+                <h6 class="mt-1 mb-1">Doing</h6>  
+                <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Complete</a>
+              {% else %}
+                <h6 class="mt-1 mb-1">Completed</h6>
+                <a href="{{ url_for('doing_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Doing</a> 
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
-    
-    <form action="/new-item" method="POST">
-      <label for="title">Enter new title</label>
-      <input type="text" id="title" name="title" size="10">
-      <button type="submit">New item</button>
-    </form>
-    
-    <form action="/delete-item" method="post">
-      <label for="title">Delete an entry</label>
-      <input type="text" id="del_id" name="del_id" size="10">
-      <button type="submit">Delete</button>
-    </form>
-    
-    <form action="/update-item" method="post">
-      <label for="title">Set as Complete</label>
-      <input type="text" id="com_id" name="com_id" size="10">
-      <button type="submit">Complete</button>
-    </form>
-    
-    <div>
-  </div>
   </div>
 {% endblock %}
