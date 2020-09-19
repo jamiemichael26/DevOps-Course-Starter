@@ -2,7 +2,7 @@ import requests
 from flask import session
 
 def get_apikeys():
-    with open('todo_app\\data\\key.gitignore') as f:
+    with open('todo_app\\data\\secret.txt') as f:
             data = f.read().split("\n")
     return {'key': data[0], 'token': data[1]}
 
